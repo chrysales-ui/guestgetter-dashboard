@@ -669,7 +669,7 @@ export default function Scorecard({ restaurant }) {
                 {c.fbl.matched > 0 && (<>
                   <div style={{ fontSize: 11, color: dim, textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 600, marginBottom: 8 }}>Reservations from leads</div>
                   <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 34, color: greenMid, lineHeight: 1 }}>{fmtN(c.fbl.matched)}</div>
-                  <div style={{ fontSize: 14, color: muted, marginTop: 6, marginBottom: 18, lineHeight: 1.5 }}>Cross-matched · {fmtN(c.fbl.newGuests)} new guests</div>
+                  <div style={{ fontSize: 14, color: muted, marginTop: 6, marginBottom: 18, lineHeight: 1.5 }}>Cross-matched · {fmtN(c.fbl.newGuests)} new guests{c.diningMetaSpend > 0 ? ` · ${fmtD2(c.diningMetaSpend / c.fbl.matched)} / res` : ''}</div>
                 </>)}
                 {(() => {
                   const gm = {};
@@ -680,7 +680,6 @@ export default function Scorecard({ restaurant }) {
                     })
                   );
                   const guests = Object.values(gm);
-                  const totalWithEst = guests.reduce((s, g) => s + (g.hasPos ? g.amount : g.resCount * c.spendPerRes), 0);
                   if (!guests.length && c.metaLeadRevenue === 0) return null;
                   const otRev = (c.fb.otReservations || 0) * c.spendPerRes;
                   const display = (c.metaLeadRevenueWithEst > 0 ? c.metaLeadRevenueWithEst : c.metaLeadRevenue) + otRev;
