@@ -670,19 +670,31 @@ export default function Scorecard({ restaurant }) {
                 {c.fbl.returning > 0 && statRow('Returning guests', fmtN(c.fbl.returning), 'a')}
                 {c.unbooked > 0 && statRow('Unconverted (30–90d)', fmtN(c.unbooked))}
               </div>
-              {data.fbLeads?.summary?.matchedGuestDetails?.length > 0 && (
-                <ChExpand label="Matched guests breakdown">
-                  <MiniTable
-                    headers={['Guest', 'Reservations', 'Revenue']}
-                    rows={data.fbLeads.summary.matchedGuestDetails.map(g => [
-                      g.email ? g.email.replace(/(.{2}).*(@.*)/, '$1***$2') : `***${g.phone.slice(-4)}`,
-                      fmtN(g.resDates.length),
-                      fmtD(g.revenue),
-                    ])}
-                    footerRow={['Total', '', fmtD(data.fbLeads.summary.metaLeadRevenue)]}
-                  />
-                </ChExpand>
-              )}
+              {(() => {
+                const guestMap = {};
+                (data.fbLeads?.daily || []).filter(d => d.date >= cs && d.date <= end).forEach(d => {
+                  (d.matchedGuests || []).forEach(g => {
+                    if (!guestMap[g.key]) guestMap[g.key] = { email: g.email, phone: g.phone, amount: 0, count: 0 };
+                    guestMap[g.key].amount += g.amount;
+                    guestMap[g.key].count++;
+                  });
+                });
+                const rows = Object.values(guestMap).sort((a, b) => b.amount - a.amount);
+                if (!rows.length) return null;
+                return (
+                  <ChExpand label="Matched guests breakdown">
+                    <MiniTable
+                      headers={['Guest', 'Res.', 'Revenue']}
+                      rows={rows.map(g => [
+                        g.email ? g.email.replace(/(.{2}).*(@.*)/, '$1***$2') : `***${g.phone.slice(-4)}`,
+                        fmtN(g.count),
+                        g.amount > 0 ? fmtD(g.amount) : '—',
+                      ])}
+                      footerRow={['Total', fmtN(rows.length), fmtD(rows.reduce((s, g) => s + g.amount, 0))]}
+                    />
+                  </ChExpand>
+                );
+              })()}
               {c.fbCamps.filter(x => x.spend > 0 && !x.name?.toLowerCase().includes('private event') && !x.name?.toLowerCase().includes('group booking')).length > 0 && (
                 <ChExpand label="Campaign breakdown">
                   <MiniTable

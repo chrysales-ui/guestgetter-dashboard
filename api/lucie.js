@@ -425,7 +425,6 @@ async function processFacebookLeads(reservationGuestIndex, pvGuestIndex = {}, pv
   let totalLeads = 0, matched = 0, newGuests = 0, returning = 0, pvMatched = 0, pePvMatched = 0, pePvMatchedRevenue = 0, metaLeadRevenue = 0;
   const seenPeEmails = new Set();
   const seenMatchedGuests = new Set();
-  const matchedGuestDetails = [];
 
   for (let i = 1; i < lines.length; i++) {
     const col = parseCSVLine(lines[i]);
@@ -473,12 +472,12 @@ async function processFacebookLeads(reservationGuestIndex, pvGuestIndex = {}, pv
         if (earliest >= dateKey) { newGuests++; daily[dateKey].newGuests++; monthly[monthKey].newGuests++; }
         else { returning++; daily[dateKey].returning++; monthly[monthKey].returning++; }
         if (!seenMatchedGuests.has(guestKey) && resRevenueIndex[guestKey]) {
-          const guestTotal = Object.values(resRevenueIndex[guestKey]).reduce((s, v) => s + v, 0);
-          matchedGuestDetails.push({ email: email || '', phone: phone || '', revenue: guestTotal, resDates: Object.keys(resRevenueIndex[guestKey]) });
           for (const [resDate, amt] of Object.entries(resRevenueIndex[guestKey])) {
             metaLeadRevenue += amt;
             if (!daily[resDate]) daily[resDate] = { date: resDate, leads: 0, matched: 0, newGuests: 0, returning: 0, pePvMatched: 0 };
             daily[resDate].metaLeadRevenue = (daily[resDate].metaLeadRevenue || 0) + amt;
+            if (!daily[resDate].matchedGuests) daily[resDate].matchedGuests = [];
+            daily[resDate].matchedGuests.push({ key: guestKey, email: email || '', phone: phone || '', amount: amt });
           }
           seenMatchedGuests.add(guestKey);
         }
@@ -488,7 +487,7 @@ async function processFacebookLeads(reservationGuestIndex, pvGuestIndex = {}, pv
 
   const matchRate = totalLeads > 0 ? +(matched / totalLeads * 100).toFixed(1) : 0;
   return {
-    summary: { totalLeads, matched, newGuests, returning, matchRate, pvMatched, pePvMatched, pePvMatchedRevenue, metaLeadRevenue, matchedGuestDetails },
+    summary: { totalLeads, matched, newGuests, returning, matchRate, pvMatched, pePvMatched, pePvMatchedRevenue, metaLeadRevenue },
     daily: Object.values(daily).sort((a, b) => a.date.localeCompare(b.date)),
     monthly: Object.values(monthly).sort((a, b) => a.month.localeCompare(b.month)),
   };
