@@ -553,12 +553,7 @@ export default function Scorecard({ restaurant }) {
               )}
               {c.blendedCPR > 0 && c.spendPerRes > 0 && (
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 13, fontWeight: 600, marginTop: 6, padding: '3px 8px', borderRadius: 5, color: greenMid, background: 'rgba(45,122,79,0.08)' }}>
-                  ↑ {(c.spendPerRes / c.blendedCPR).toFixed(0)}× ROI — {fmtD(c.blendedCPR)} to acquire, {fmtD(c.spendPerRes)} revenue per reservation
-                </div>
-              )}
-              {(c.metaLeadRevenue > 0 || (c.ga.reservations > 0 && c.spendPerRes > 0)) && (
-                <div style={{ fontSize: 14, color: '#52524A', marginTop: 8, lineHeight: 1.65 }}>
-                  Est. total revenue driven: <strong style={{ color: green, fontSize: 14 }}>{fmtD((c.metaLeadRevenue || 0) + (c.ga.reservations * c.spendPerRes || 0))}</strong>
+                  ↑ {(c.spendPerRes / c.blendedCPR).toFixed(0)}× ROI — {fmtD(c.blendedCPR)} to acquire, {fmtD(c.spendPerRes)} revenue per reservation{(c.metaLeadRevenue > 0 || (c.ga.reservations > 0 && c.spendPerRes > 0)) ? ` · ${fmtD((c.metaLeadRevenue || 0) + (c.ga.reservations * c.spendPerRes || 0))} est. total revenue` : ''}
                 </div>
               )}
             </div>
