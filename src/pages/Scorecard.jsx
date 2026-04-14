@@ -51,7 +51,7 @@ function compute(data, cs, end) {
   const GA_KEYS  = ['spend', 'reservations', 'storeVisits', 'calls'];
   const RES_KEYS = ['reservations', 'covers', 'seatedRes', 'ltpcSum', 'ltpcCount'];
   const PV_KEYS  = ['leads', 'completed', 'lost', 'groupSize', 'proposalTotal', 'revenueValue'];
-  const FBL_KEYS = ['leads', 'matched', 'newGuests', 'returning', 'pvMatched', 'pePvMatched', 'pePvMatchedRevenue'];
+  const FBL_KEYS = ['leads', 'matched', 'newGuests', 'returning', 'pvMatched', 'pePvMatched', 'pePvMatchedRevenue', 'metaLeadRevenue'];
   const SEO_KEYS = ['clicks', 'impressions'];
   const seo  = sumW(data.seo?.daily, cs, end, SEO_KEYS);
   const seop = sumW(data.seo?.daily, ps, pe,  SEO_KEYS);
@@ -287,7 +287,7 @@ function compute(data, cs, end) {
     gaCamps, fbCamps, fbCampsP,
     diningMetaResults, diningMetaResultsP, diningMetaCPL, diningMetaCPLP, diningMetaCPLPct,
     gResPct, totalResPct, pvLdPct, resPct, fvPct, gCPRPct, unbooked,
-    metaLeadRevenue: data.fbLeads?.summary?.metaLeadRevenue || 0,
+    metaLeadRevenue: fbl.metaLeadRevenue || 0,
     bigWin, whatHappened,
     actions,
   };

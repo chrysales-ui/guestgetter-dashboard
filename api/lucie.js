@@ -210,7 +210,10 @@ async function processReservations() {
     for (const k of [ge, gp].filter(Boolean)) {
       if (!guestIndex[k]) guestIndex[k] = [];
       guestIndex[k].push(createdKey);
-      if (ltpc > 0) resRevenueIndex[k] = (resRevenueIndex[k] || 0) + ltpc;
+      if (ltpc > 0) {
+        if (!resRevenueIndex[k]) resRevenueIndex[k] = {};
+        resRevenueIndex[k][createdKey] = (resRevenueIndex[k][createdKey] || 0) + ltpc;
+      }
     }
   }
   for (let i = 1; i < lines.length; i++) {
@@ -469,7 +472,11 @@ async function processFacebookLeads(reservationGuestIndex, pvGuestIndex = {}, pv
         if (earliest >= dateKey) { newGuests++; daily[dateKey].newGuests++; monthly[monthKey].newGuests++; }
         else { returning++; daily[dateKey].returning++; monthly[monthKey].returning++; }
         if (!seenMatchedGuests.has(guestKey) && resRevenueIndex[guestKey]) {
-          metaLeadRevenue += resRevenueIndex[guestKey];
+          for (const [resDate, amt] of Object.entries(resRevenueIndex[guestKey])) {
+            metaLeadRevenue += amt;
+            if (!daily[resDate]) daily[resDate] = { date: resDate, leads: 0, matched: 0, newGuests: 0, returning: 0, pePvMatched: 0 };
+            daily[resDate].metaLeadRevenue = (daily[resDate].metaLeadRevenue || 0) + amt;
+          }
           seenMatchedGuests.add(guestKey);
         }
       }
