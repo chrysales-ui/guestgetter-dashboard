@@ -670,6 +670,19 @@ export default function Scorecard({ restaurant }) {
                 {c.fbl.returning > 0 && statRow('Returning guests', fmtN(c.fbl.returning), 'a')}
                 {c.unbooked > 0 && statRow('Unconverted (30–90d)', fmtN(c.unbooked))}
               </div>
+              {data.fbLeads?.summary?.matchedGuestDetails?.length > 0 && (
+                <ChExpand label="Matched guests breakdown">
+                  <MiniTable
+                    headers={['Guest', 'Reservations', 'Revenue']}
+                    rows={data.fbLeads.summary.matchedGuestDetails.map(g => [
+                      g.email ? g.email.replace(/(.{2}).*(@.*)/, '$1***$2') : `***${g.phone.slice(-4)}`,
+                      fmtN(g.resDates.length),
+                      fmtD(g.revenue),
+                    ])}
+                    footerRow={['Total', '', fmtD(data.fbLeads.summary.metaLeadRevenue)]}
+                  />
+                </ChExpand>
+              )}
               {c.fbCamps.filter(x => x.spend > 0 && !x.name?.toLowerCase().includes('private event') && !x.name?.toLowerCase().includes('group booking')).length > 0 && (
                 <ChExpand label="Campaign breakdown">
                   <MiniTable
