@@ -664,9 +664,13 @@ export default function Scorecard({ restaurant }) {
                   <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 34, color: greenMid, lineHeight: 1 }}>{fmtN(c.fbl.matched)}</div>
                   <div style={{ fontSize: 14, color: muted, marginTop: 6, marginBottom: 18, lineHeight: 1.5 }}>Cross-matched · {fmtN(c.fbl.newGuests)} new guests</div>
                 </>)}
+                {c.metaLeadRevenue > 0 && (<>
+                  <div style={{ fontSize: 11, color: dim, textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 600, marginBottom: 8 }}>Revenue from matched leads</div>
+                  <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 34, color: green, lineHeight: 1 }}>{fmtD(c.metaLeadRevenue)}</div>
+                  <div style={{ fontSize: 14, color: muted, marginTop: 6, marginBottom: 18, lineHeight: 1.5 }}>Total revenue from {fmtN(c.fbl.matched)} matched guests</div>
+                </>)}
                 <hr style={{ border: 'none', borderTop: `1px solid ${border}`, margin: '14px 0' }} />
                 {c.fb.otReservations > 0 && statRow('OT reservations (pixel)', fmtN(c.fb.otReservations), 'g')}
-                {c.metaLeadRevenue > 0 && statRow('Revenue from matched leads', fmtD(c.metaLeadRevenue), 'g')}
                 {c.fbl.newGuests > 0 && statRow('New guests', fmtN(c.fbl.newGuests), 'g')}
                 {c.fbl.returning > 0 && statRow('Returning guests', fmtN(c.fbl.returning), 'a')}
                 {c.unbooked > 0 && statRow('Unconverted (30–90d)', fmtN(c.unbooked))}
