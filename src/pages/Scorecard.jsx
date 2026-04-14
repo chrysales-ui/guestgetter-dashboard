@@ -556,14 +556,9 @@ export default function Scorecard({ restaurant }) {
                   ↑ {(c.spendPerRes / c.blendedCPR).toFixed(0)}× ROI — {fmtD(c.blendedCPR)} to acquire, {fmtD(c.spendPerRes)} revenue per reservation
                 </div>
               )}
-              {c.metaLeadRevenue > 0 && (
+              {(c.metaLeadRevenue > 0 || (c.ga.reservations > 0 && c.spendPerRes > 0)) && (
                 <div style={{ fontSize: 14, color: '#52524A', marginTop: 8, lineHeight: 1.65 }}>
-                  Meta leads generated <strong style={{ color: green, fontSize: 14 }}>{fmtD(c.metaLeadRevenue)}</strong> in total revenue
-                </div>
-              )}
-              {c.spendPerRes > 0 && c.totalRes > 0 && (
-                <div style={{ fontSize: 14, color: '#52524A', marginTop: 8, lineHeight: 1.65 }}>
-                  Google Ads drove an est. <strong style={{ color: green, fontSize: 14 }}>{fmtD(c.ga.reservations * c.spendPerRes)}</strong> in revenue (avg × reservations)
+                  Est. total revenue driven: <strong style={{ color: green, fontSize: 14 }}>{fmtD((c.metaLeadRevenue || 0) + (c.ga.reservations * c.spendPerRes || 0))}</strong>
                 </div>
               )}
             </div>
