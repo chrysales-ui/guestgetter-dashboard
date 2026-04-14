@@ -471,13 +471,19 @@ async function processFacebookLeads(reservationGuestIndex, pvGuestIndex = {}, pv
         const earliest = createdDates.slice().sort()[0];
         if (earliest >= dateKey) { newGuests++; daily[dateKey].newGuests++; monthly[monthKey].newGuests++; }
         else { returning++; daily[dateKey].returning++; monthly[monthKey].returning++; }
-        if (!seenMatchedGuests.has(guestKey) && resRevenueIndex[guestKey]) {
-          for (const [resDate, amt] of Object.entries(resRevenueIndex[guestKey])) {
-            metaLeadRevenue += amt;
-            if (!daily[resDate]) daily[resDate] = { date: resDate, leads: 0, matched: 0, newGuests: 0, returning: 0, pePvMatched: 0 };
-            daily[resDate].metaLeadRevenue = (daily[resDate].metaLeadRevenue || 0) + amt;
-            if (!daily[resDate].matchedGuests) daily[resDate].matchedGuests = [];
-            daily[resDate].matchedGuests.push({ key: guestKey, email: email || '', phone: phone || '', amount: amt });
+        if (!seenMatchedGuests.has(guestKey)) {
+          if (resRevenueIndex[guestKey]) {
+            for (const [resDate, amt] of Object.entries(resRevenueIndex[guestKey])) {
+              metaLeadRevenue += amt;
+              if (!daily[resDate]) daily[resDate] = { date: resDate, leads: 0, matched: 0, newGuests: 0, returning: 0, pePvMatched: 0 };
+              daily[resDate].metaLeadRevenue = (daily[resDate].metaLeadRevenue || 0) + amt;
+              if (!daily[resDate].matchedGuests) daily[resDate].matchedGuests = [];
+              daily[resDate].matchedGuests.push({ key: guestKey, email: email || '', phone: phone || '', amount: amt });
+            }
+          } else {
+            // matched guest but no POS data — record on lead date with $0
+            if (!daily[dateKey].matchedGuests) daily[dateKey].matchedGuests = [];
+            daily[dateKey].matchedGuests.push({ key: guestKey, email: email || '', phone: phone || '', amount: 0 });
           }
           seenMatchedGuests.add(guestKey);
         }
