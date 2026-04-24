@@ -662,6 +662,11 @@ export default function Scorecard({ restaurant }) {
                 <span style={{ fontSize: 16, fontWeight: 600 }}>Meta Ads</span>
                 <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 14, color: green, background: 'rgba(45,90,61,0.07)', padding: '4px 10px', borderRadius: 6 }}>{fmtD(c.diningMetaSpend)} CAD</span>
               </div>
+              {slug === 'lucie' && (
+                <div style={{ margin: '0', padding: '10px 22px', background: 'rgba(180,140,60,0.07)', borderBottom: `1px solid rgba(180,140,60,0.18)`, fontSize: 13, color: '#7A6020', lineHeight: 1.5 }}>
+                  <strong>Campaigns paused as of April 21</strong> — preparing for the next chapter: the opening of Lucie's new era.
+                </div>
+              )}
               <div style={{ padding: '20px 22px' }}>
                 <div style={{ fontSize: 11, color: dim, textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 600, marginBottom: 8 }}>Leads captured</div>
                 <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 34, color: green, lineHeight: 1 }}>{fmtN(c.diningMetaResults)}</div>
