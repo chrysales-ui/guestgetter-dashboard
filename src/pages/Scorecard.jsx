@@ -662,7 +662,7 @@ export default function Scorecard({ restaurant }) {
                 <span style={{ fontSize: 16, fontWeight: 600 }}>Meta Ads</span>
                 <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 14, color: green, background: 'rgba(45,90,61,0.07)', padding: '4px 10px', borderRadius: 6 }}>{fmtD(c.diningMetaSpend)} CAD</span>
               </div>
-              {slug === 'lucie' && (
+              {slug === 'lucie' && !(data.facebook?.daily || []).some(d => d.date > '2026-04-21' && d.spend > 0) && (
                 <div style={{ margin: '0', padding: '10px 22px', background: 'rgba(180,140,60,0.07)', borderBottom: `1px solid rgba(180,140,60,0.18)`, fontSize: 13, color: '#7A6020', lineHeight: 1.5 }}>
                   <strong>Campaigns paused as of April 21</strong> — preparing for the next chapter: the opening of Lucie's new era.
                 </div>
