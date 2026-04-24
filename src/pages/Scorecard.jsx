@@ -662,11 +662,6 @@ export default function Scorecard({ restaurant }) {
                 <span style={{ fontSize: 16, fontWeight: 600 }}>Meta Ads</span>
                 <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 14, color: green, background: 'rgba(45,90,61,0.07)', padding: '4px 10px', borderRadius: 6 }}>{fmtD(c.diningMetaSpend)} CAD</span>
               </div>
-              {slug === 'lucie' && !(data.facebook?.daily || []).some(d => d.date > '2026-04-21' && d.spend > 0) && (
-                <div style={{ margin: '0', padding: '10px 22px', background: 'rgba(180,140,60,0.07)', borderBottom: `1px solid rgba(180,140,60,0.18)`, fontSize: 13, color: '#7A6020', lineHeight: 1.5 }}>
-                  <strong>Campaigns paused as of April 21</strong> — preparing for the next chapter: the opening of Lucie's new era.
-                </div>
-              )}
               <div style={{ padding: '20px 22px' }}>
                 <div style={{ fontSize: 11, color: dim, textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 600, marginBottom: 8 }}>Leads captured</div>
                 <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 34, color: green, lineHeight: 1 }}>{fmtN(c.diningMetaResults)}</div>
@@ -828,6 +823,15 @@ export default function Scorecard({ restaurant }) {
               <div style={{ flex: 1, height: 1, background: border }} />
             </div>
             <div className="sc-actions">
+              {slug === 'lucie' && !(data.facebook?.daily || []).some(d => d.date > '2026-04-21' && d.spend > 0) && (
+                <div style={{ background: white, borderRadius: 12, padding: '20px 22px', border: `1px solid rgba(180,140,60,0.3)`, borderLeft: `3px solid #B8902A`, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'rgba(255,255,255,0.9)', background: '#B8902A', borderRadius: 4, padding: '2px 7px', lineHeight: 1.6, flexShrink: 0 }}>★</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#2A2A1E', letterSpacing: '-0.01em' }}>Launching Lucie's new era campaign</span>
+                  </div>
+                  <div style={{ fontSize: 13.5, color: muted, lineHeight: 1.65, paddingLeft: 2 }}>Meta campaigns have been paused since April 21 as we prepare for the next chapter — the opening of Lucie's new era. The next campaign will launch once the creative and strategy are ready.</div>
+                </div>
+              )}
               {c.actions.map((a, i) => (
                 <div key={i} style={{ background: white, borderRadius: 12, padding: '20px 22px', border: `1px solid ${border}`, borderLeft: `3px solid ${green}`, display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
