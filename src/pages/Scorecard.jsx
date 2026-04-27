@@ -823,7 +823,7 @@ export default function Scorecard({ restaurant }) {
               <div style={{ flex: 1, height: 1, background: border }} />
             </div>
             <div className="sc-actions">
-              {slug === 'lucie' && !(data.facebook?.daily || []).some(d => d.date > '2026-04-21' && d.spend > 0) && (
+              {slug === 'lucie' && (
                 <div style={{ background: white, borderRadius: 12, padding: '20px 22px', border: `1px solid rgba(180,140,60,0.3)`, borderLeft: `3px solid #B8902A`, display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: 'rgba(255,255,255,0.9)', background: '#B8902A', borderRadius: 4, padding: '2px 7px', lineHeight: 1.6, flexShrink: 0 }}>★</span>
