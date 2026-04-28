@@ -641,6 +641,8 @@ export default function Scorecard({ restaurant }) {
                   <div style={{ fontSize: 14, color: muted, marginTop: 6, marginBottom: 18, lineHeight: 1.5 }}>{fmtN(c.ga.reservations)} reservations × {fmtD(c.spendPerRes)} avg · includes unconfirmed</div>
                 </>)}
                 <hr style={{ border: 'none', borderTop: `1px solid ${border}`, margin: '14px 0' }} />
+                {c.res.googlePartnerRes > 0 && statRow('Google-tagged reservations', fmtN(c.res.googlePartnerRes), 'g')}
+                {c.res.googlePartnerRevenue > 0 && statRow('Confirmed revenue (POS)', fmtD(c.res.googlePartnerRevenue), 'g')}
                 {c.gResPct != null && statRow('vs prev period', `${c.gResPct >= 0 ? '+' : ''}${c.ga.reservations - c.gap.reservations} (${c.gResPct.toFixed(1)}%)`, c.gResPct >= 0 ? 'g' : 'r')}
                 {c.gCostPerResP > 0 && statRow('Prev cost/res', fmtD2(c.gCostPerResP))}
                 {c.ga.calls > 0 && statRow('Phone calls', `${fmtN(c.ga.calls)}${c.gap.calls > 0 ? ` (+${c.ga.calls - c.gap.calls})` : ''}`, c.ga.calls >= c.gap.calls ? 'g' : 'r')}
