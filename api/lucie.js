@@ -498,7 +498,10 @@ async function processFacebookLeads(reservationGuestIndex, pvGuestIndex = {}, pv
           const guestRevDates = resRevenueIndex[guestKey] || {};
           const hasPos = Object.keys(guestRevDates).length > 0;
           const posTotal = Object.values(guestRevDates).reduce((s, v) => s + v, 0);
-          daily[dateKey].matchedGuests.push({ key: guestKey, email: email || '', phone: phone || '', amount: posTotal, resCount: hasPos ? Object.keys(guestRevDates).length : createdDates.length, hasPos });
+          const resAfterLead = hasPos
+            ? Object.keys(guestRevDates).filter(d => d >= dateKey).length
+            : createdDates.filter(d => d >= dateKey).length;
+          daily[dateKey].matchedGuests.push({ key: guestKey, email: email || '', phone: phone || '', amount: posTotal, resCount: resAfterLead, hasPos });
           seenDetailGuests.add(guestKey);
         }
       }
